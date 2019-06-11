@@ -4,24 +4,23 @@ SETLOCAL EnableDelayedExpansion
 set PROJECT_PATH=%1
 set PROJECT_OUTPUT_PATH=%2
 set PROJECT_CONFIGURATION="%3"
-set VS_CRT_REDIST_REL[0]="%VcToolsRedistDir%onecore\x64\Microsoft.VC141.CRT"
-set VS_CRT_REDIST_REL[1]="%VcToolsRedistDir%onecore\x64\Microsoft.VC150.CRT"
-
 set UCRT_DLL_PATH="%WindowsSdkVerBinPath%\x64\ucrt"
+set VS_CRT_REDIST_WILDCARD_FOLDER= ("%VcToolsRedistDir%onecore\x64\Microsoft.VC*.CRT")
 
 :: Check execution environment
 if "%VSINSTALLDIR%" == "" (
     goto RunFromDevCmd
 )
 
-for /L %%n in (0,1,1) do (
-    call robocopy.exe !VS_CRT_REDIST_REL[%%n]! %PROJECT_OUTPUT_PATH% /S /E >nul
-    if !ERRORLEVEL! LEQ 8 (
+for /D %%A in %VS_CRT_REDIST_WILDCARD_FOLDER% do (
+	call robocopy.exe "%%~A" %PROJECT_OUTPUT_PATH% /S /E >nul
+	if !ERRORLEVEL! LEQ 8 (
         goto StageResistRelOk
     )
 )
 echo Error while staging debugger binaries. Exiting...
 exit /b 1
+
 :StageResistRelOk
 
 call robocopy.exe %UCRT_DLL_PATH% %PROJECT_OUTPUT_PATH% /S /E >nul
