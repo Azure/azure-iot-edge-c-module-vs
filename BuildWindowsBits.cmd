@@ -6,7 +6,7 @@ set PROJECT_OUTPUT_PATH=%2
 set PROJECT_CONFIGURATION=%3
 set UCRT_DLL_PATH="%WindowsSdkVerBinPath%\x64\ucrt"
 set VS_CRT_REDIST_WILDCARD_FOLDER= ("%VcToolsRedistDir%onecore\x64\Microsoft.VC*.CRT")
-set DEFAULT_OUTPUT_PATH="%~dp0\iotedgeoutput\bin"
+set DEFAULT_OUTPUT_PATH="%~dp0\bin\iotedgeoutput"
 
 if "%PROJECT_OUTPUT_PATH%" == "" (
     set PROJECT_OUTPUT_PATH=%DEFAULT_OUTPUT_PATH%
